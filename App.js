@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import Ilker from './ilker';
 
 export default function App() {
-  const [name, setName] = useState('shaun');
-  const [age, setAge] = useState(30)
+  const [people, setPeople] = useState([
+    {name: 'deneme', key: '1'},
+    {name: 'deneme', key: '2'},
+    {name: 'deneme', key: '3'},
+    {name: 'deneme', key: '4'},
+    {name: 'deneme', key: '5'},
+  ])
+  console.log(people);
 
   return (
     <View style={styles.container}>
-      <Text>Enter Name:</Text>
-
-      <TextInput 
-        multiline
-        style={styles.input} 
-        placeholder='e.g John Doe'
-        onChangeText={(val) => setName(val)}/>
-
-      <Text>Enter Age:</Text>
-
-      <TextInput 
-        keyboardType='numeric'
-        style={styles.input} 
-        placeholder='e.g 20'
-        onChangeText={(val) => setAge(val)}/>
-
-      <Text>name: {name}, age: {age}</Text>
+      <FlatList 
+          numColumns={2}
+          keyExtractor={(item) => item.key}
+          data={people}
+          renderItem={({item}) => (
+          <TouchableOpacity onPress={() => {setPeople(prevPeople => {
+            return prevPeople.filter(person => person.key != item.key);  
+          })}}>
+            <Text style={styles.item}>{item.name}</Text>
+          </TouchableOpacity>
+          )}
+          />
     </View>
   );
 }
@@ -41,5 +43,11 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 10,
     width: 200
+  },
+  item: {
+    padding: 50,
+    backgroundColor: 'red',
+    color: 'white',
+    margin: 5
   }
 });
